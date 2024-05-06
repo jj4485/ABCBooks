@@ -11,36 +11,32 @@ import matplotlib.pyplot as plt
 ROOT_DIR = Path(__file__).parent
 TEXT_FILE = ROOT_DIR / 'words.txt'
 
-# Load data from the JSON file
+
 with open(TEXT_FILE, 'r', encoding='utf-8', errors='ignore') as file:
     data = json.load(file)
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
-# Extract a list of words
+
 words = [item['term'] for item in data]
 
 
-# Set a seed for reproducibility
 random.seed(42)
 
-# Randomly select 1000 words
 random_words = random.sample(words, 1000)
 
-# Load the GloVe model
+
 model = api.load('glove-wiki-gigaword-100')
 
-# Get embeddings for selected words
+
 embeddings = {word: model[word] for word in random_words if word in model}
 
-# Create a DataFrame from embeddings
 df = pd.DataFrame.from_dict(embeddings, orient='index')
 
 
 
-# Correctly using the DataFrame's index to get the word labels
 labels = df.index
-###print(labels)
+
 
 features = df.iloc[:, :]
 #print(features)
